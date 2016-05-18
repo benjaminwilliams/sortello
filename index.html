@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="https://api.trello.com/1/client.js?key=42827036f8810c13b15f59c2b85101f2"></script>
+    <script src="https://code.angularjs.org/1.5.2/angular.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+
+<div ng-app="sortelloApp" ng-controller="sortelloCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 ng-click="authorise()">Authorise</h2>
+                <h2>Enter JSON location</h2>
+                <form ng-submit="getJson()">
+                    <input ng-model="jsonUrl">
+                    <input type="submit">
+                </form>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <!-- filters -->
+                <h2>Filters</h2>
+                <label for="freeSearch">Free search</label>
+                <input id="freeSearch" ng-model="freeSearch">
+
+                <label for="list">Column</label>
+                <select id="list" ng-model="listFilter"
+                        ng-options="list.id as list.name for list in data.lists">
+                </select>
+
+                <div ng-repeat="tag in data.labels" >
+                    <div class="label-wrapper" ng-click="setTag(tag.id)">
+                        <div class="label-color" style="background-color: {{tag.color}};"></div>
+                        <div class="label-name"  >{{tag.name}} </div> |
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <!-- results -->
+                <div ng-repeat="card in data.cards | filter: listFilter : card.idList | filter : freeSearch | filter : tagFilter" class="item">
+                    <div class="title" ng-click="toggleDesc(card)">{{card.name}}</div>
+                    <div class="desc" ng-show="card.open">
+                        {{card.id}}
+                        <h4>Description</h4>
+                        {{card.desc}}
+                        <h4>Comments</h4>
+                        {{card.comments}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
